@@ -22,18 +22,13 @@ packetCount = -1 # count of packets sent; used to limit simulation
 
 Hosts = []
 
+# Negative exponential function for Poisson distribution
 def exp_dist(rate):
-    """
-    Exponential Distribution
-    """ 
     u = random()
     return ((-1/rate) * log(1-u))
 
+# Statistics container
 class Statistics:
-    """
-    Statistics outputs
-    """
-    
     def __init__(self, delay_count = 0, sent = 0):
         self.delay_count = delay_count
         self.sent = sent
@@ -42,12 +37,9 @@ class Statistics:
 # statistics
 statistics = Statistics()
 
+# Main event element
 class Event:
-    """
-    Event class
-    """
-
-    def __init__(self, timei = 0, eventType = 0, source = None, packet = None, msg = "NULL"):
+    def __init__(self, time = 0, eventType = 0, source = None, packet = None, msg = "NULL"):
         self.time = time
         self.eventType = eventType
         self.source = source
@@ -64,21 +56,16 @@ class Event:
         return "<time = %d, eventType = %d, msg = %s>" % (self.time, self.eventType, self.msg)
 
 
+# Packet element
 class Packet:
-    """
-    Packet Class
-    """
-
     def __init__(self, hops = 0, size = 0, arrival_time = 0):
         self.hops = hops
         self.size = size
         self.arrival_time = arrival_time
 
 
+# Arrival event handler. Generates new arrival event from previous arrival
 def arrival(eventList):
-    """
-    Process and Generate Arrival Events
-    """ 
     currentEvent = eventList[currentIndex]
    
     # Generate next event with a new packet 
@@ -94,6 +81,7 @@ def arrival(eventList):
     Hosts[currentEvent.packet.source].put(item = currentEvent.packet, block = False)
 
 
+# Departure event handler. Generates new transmission event from previous trasmission
 def transmission(eventList):
     """
     Process and Generate Transmission Events
